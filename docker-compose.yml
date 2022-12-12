@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  premier_server:
+    build: .
+    command: ["php", "bin/console", "server:run", "0.0.0.0:8040"]
+    # command: ["php", "-S","0.0.0.0:8040"]
+    restart: always
+    volumes:
+      - ./:/var/www:rw
+    ports:
+      - 8040:8040
+
+  premier_database:
+    image: mysql:5
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: premier
+    ports:
+      - "3307:3306"
+    volumes:
+      - premier-data:/var/lib/postgresql/data:rw
+
+  premier_redis:
+    image: redis:6
+    restart: always
+    ports:
+      - "6379"
+
+volumes:
+  premier-data: 
